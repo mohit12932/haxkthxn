@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 
 // Sidebar component
 const Sidebar = ({ currentSection, setCurrentSection }) => {
