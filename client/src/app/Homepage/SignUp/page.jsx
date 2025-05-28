@@ -91,7 +91,7 @@ const Page = () => {
                         <div className="mt-4">
                             <label htmlFor="username" className="block text-sm font-medium text-gray-800">Username</label>
                             <input type="text" {...register("username", { required: 'Username is required' })} onChange={() => clearErrors('existUser ')}
-                                className="block w-full px-4 py-2 border border-black bg-transparent rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                                className="block w-full text-gray-800 px-4 py-2 border border-black bg-transparent rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
                         {errors.username && <p className="text-sm text-red-400">{errors.username.message}</p>}
 
@@ -112,7 +112,7 @@ const Page = () => {
                             </div>
 
                             <input type={isPasswordVisible ? 'text' : 'password'} {...register("password", { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters long' } })} onChange={() => clearErrors('existUser ')}
-                                className="block w-full border-black px-4 py-2 bg-transparent border rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                                className="block w-full border-black text-gray-800 px-4 py-2 bg-transparent border rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
                         {errors.password && <p className="text-sm text-red-400">{errors.password.message}</p>}
 
@@ -129,9 +129,9 @@ const Page = () => {
                         {errors.gender && <p className="text-sm text-red-400">{errors.gender.message}</p>}
 
                         <div className="mt-4">
-                            <label htmlFor="age" className="block text-sm font-medium text-gray-800">Age</label>
-                            <input type="number" {...register("age", { required: 'Age is required', min: { value: 1, message: 'Age must be at least 1' } })} onChange={() => clearErrors('existUser ')}
-                                className="block w-full px-4 py-2 border border-black bg-transparent rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                            <label htmlFor="age" className="block text-sm  font-medium text-gray-800">Age</label>
+                            <input type="number" {...register("age", { min: { value: 1, message: 'Age must be at least 1' } })} onChange={() => clearErrors('existUser ')}
+                                className="block w-full px-4 text-gray-800 py-2 border border-black bg-transparent rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
                         {errors.age && <p className="text-sm text-red-400">{errors.age.message}</p>}
 
