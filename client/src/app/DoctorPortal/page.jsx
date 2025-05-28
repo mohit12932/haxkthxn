@@ -38,40 +38,152 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
 
  // Make sure to install axios if you haven't already
 
-const Profile = () => (
-  <section className="flex justify-center items-center h-screen">
-    <div className="max-w-2xl bg-white p-10 rounded-xl shadow-md flex flex-col items-center -mt-27">
-      <div
-        className="w-48 h-48 rounded-full shadow-md bg-center bg-cover mb-6"
-        style={{
-          backgroundImage: "url('https://randomuser.me/api/portraits/men/32.jpg')",
-          boxShadow: "0 4px 10px rgba(30, 136, 229, 0.3)",
-        }}
-      />
-      <div className="text-center">
-        <h2 className="text-4xl font-bold mb-2">Dr. John Smith</h2>
-        <p className="text-gray-600 mb-1">Username: dr.johnsmith</p>
-        <p className="text-gray-600 mb-1">Clinic: City Health Medical Center</p>
-        <p className="text-gray-600 mb-1">Gender: Male</p>
-        <p className="text-gray-600 mb-1">Experience: 15 years</p>
-        <p className="text-gray-600 mb-1">Specialist: Cardiologist</p>
-        <p className="text-gray-600 mb-4">Qualification: MBBS, MD (Cardiology)</p>
+
+
+const Profile = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    clinic: "City Health Medical Center",
+    about: "Experienced cardiologist with a deep passion for preventative care and personalized treatment plans.",
+    contact: "+1 (555) 123-4567",
+    specialist: "Cardiologist",
+    qualification: "MBBS, MD (Cardiology)",
+    experience: "15 years",
+  });
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://your-api-url.com/edit', formData);
+      console.log("Edit successful:", response.data);
+      setIsEditing(false); // Close the edit form after submission
+    } catch (error) {
+      console.error("Error sending edit request:", error);
+    }
+  };
+
+  return (
+    <section className="flex justify-center items-center h-screen">
+      <div className="min-w-2xl bg-white p-10 rounded-xl shadow-md flex flex-col items-center relative -mt-16">
+        <div
+          className="w-48 h-48 rounded-full shadow-md bg-center bg-cover mb-6"
+          style={{
+            backgroundImage: "url('https://randomuser.me/api/portraits/men/32.jpg')",
+            boxShadow: "0 4px 10px rgba(30, 136, 229, 0.3)",
+          }}
+        />
+        <div className="text-center">
+          <h2 className="text-4xl font-bold mb-2">Dr. John Smith</h2>
+          <p className="text-gray-600 mb-1">Username: dr.johnsmith</p>
+          {isEditing ? (
+            <form onSubmit={handleSubmit} className="flex flex-col items-center w-full">
+              <label className="w-full text-left mb-1">
+                Clinic:
+                <input
+                  type="text"
+                  name="clinic"
+                  value={formData.clinic}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Enter clinic name"
+                />
+              </label>
+              <label className="w-full text-left mb-1">
+                About:
+                <textarea
+                  name="about"
+                  value={formData.about}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Tell us about yourself"
+                  rows="3"
+                />
+              </label>
+              <label className="w-full text-left mb-1 ">
+                Contact:
+                <input
+                  type="text"
+                  name="contact"
+                  value={formData.contact}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Enter contact number"
+                />
+              </label>
+              <label className="w-full text-left mb-1">
+                Specialist:
+                <input
+                  type="text"
+                  name="specialist"
+                  value={formData.specialist}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Enter specialist field"
+                />
+              </label>
+              <label className="w-full text-left mb-1">
+                Qualification:
+                <input
+                  type="text"
+                  name="qualification"
+                  value={formData.qualification}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Enter qualifications"
+                />
+              </label>
+              <label className="w-full text-left mb-1">
+                Experience:
+                <input
+                  type="text"
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-4 w-full"
+                  placeholder="Enter years of experience"
+                />
+              </label>
+              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                Submit
+              </button>
+            </form>
+          ) : (
+            <>
+              <p className="text-gray-600 mb-1">Clinic: {formData.clinic}</p>
+             
+              <p className="text-gray-600 mb-1">Contact: {formData.contact}</p>
+              <p className="text-gray-600 mb-1">Specialist: {formData.specialist}</p>
+              <p className="text-gray-600 mb-1">Qualification: {formData.qualification}</p>
+              <p className="text-gray-600 mb-4">Experience: {formData.experience}</p>
+               <p className="text-gray-600 mb-1"> <strong>About:</strong> {formData.about}</p>
+              <button onClick={handleEditToggle} className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                Edit
+              </button>
+            </>
+          )}
+        </div>
+        <div className="text-gray-700 space-y-2 mt-4">
+          
+        </div>
       </div>
-      <div className="text-gray-700 space-y-2">
-        <p>
-          <strong>About:</strong> Experienced cardiologist with a deep passion for
-          preventative care and personalized treatment plans.
-        </p>
-        <p>
-          <strong>Contact:</strong> +1 (555) 123-4567
-        </p>
-        <p>
-          <strong>Email:</strong> john.smith@example.com
-        </p>
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
+
+
+
+
+
+
 
 
 

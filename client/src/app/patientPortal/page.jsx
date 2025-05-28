@@ -35,40 +35,126 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
 };
 
 // Profile component
-// Profile component
-const Profile = () => (
-  <section className="flex justify-center items-center h-screen">
-    <div className="max-w-2xl bg-white p-10 rounded-xl shadow-md flex flex-col items-center -mt-16">
-      <div
-        className="w-48 h-48 rounded-full shadow-md bg-center bg-cover mb-6"
-        style={{
-          backgroundImage: "url('https://randomuser.me/api/portraits/women/44.jpg')",
-          boxShadow: "0 4px 10px rgba(34,197,94,0.3)",
-        }}
-      />
-      <div className="text-center">
-        <h2 className="text-4xl font-bold mb-2">Sarah Williams</h2>
-        <p className="text-gray-600 mb-1">Age: 35</p>
-        <p className="text-gray-600 mb-1">Gender: Female</p>
-        <p className="text-gray-600 mb-1">Address: 123 Main St, Springfield</p>
-        <p className="text-gray-600 mb-1">Weight: 150 lbs</p>
-        <p className="text-gray-600 mb-4">Dish TV ID: 123456789</p>
+
+
+const Profile = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    address: "123 Main St, Springfield",
+    dishTvId: "123456789",
+    contact: "+1 (555) 987-6543",
+    about: "Patient with history of mild asthma, currently managing with prescribed inhaler. Interested in general wellness.",
+  });
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/modify` ,formData);
+      console.log("Edit successful:", response.data);
+      setIsEditing(false); // Close the edit form after submission
+    } catch (error) {
+      console.error("Error sending edit request:", error);
+    }
+  };
+
+  return (
+    <section className="flex justify-center items-center h-screen">
+      <div className="max-w-2xl bg-white p-10 rounded-xl shadow-md flex flex-col items-center relative -mt-16">
+        <div
+          className="w-48 h-48 rounded-full shadow-md bg-center bg-cover mb-6"
+          style={{
+            backgroundImage: "url('https://randomuser.me/api/portraits/women/44.jpg')",
+            boxShadow: "0 4px 10px rgba(34,197,94,0.3)",
+          }}
+        />
+        <div className="text-center">
+          <h2 className="text-4xl font-bold mb-2">Sarah Williams</h2>
+          <p className="text-gray-600 mb-1">Age: 35</p>
+          <p className="text-gray-600 mb-1">Gender: Female</p>
+          {isEditing ? (
+            <form onSubmit={handleSubmit} className="flex flex-col items-center w-full">
+              <label className="w-full text-left mb-1">
+                Address:
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Enter address"
+                />
+              </label>
+              <label className="w-full text-left mb-1">
+                Dish TV ID:
+                <input
+                  type="text"
+                  name="dishTvId"
+                  value={formData.dishTvId}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Enter Dish TV ID"
+                />
+              </label>
+              <label className="w-full text-left mb-1">
+                Contact Number:
+                <input
+                  type="text"
+                  name="contact"
+                  value={formData.contact}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-2 w-full"
+                  placeholder="Enter contact number"
+                />
+              </label>
+              <label className="w-full text-left mb-1">
+                About:
+                <textarea
+                  name="about"
+                  value={formData.about}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-lg p-2 mb-4 w-full"
+                  placeholder="Tell us about yourself"
+                  rows="3"
+                />
+              </label>
+              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                Submit
+              </button>
+            </form>
+          ) : (
+            <>
+              <p className="text-gray-600 mb-1">Address: {formData.address}</p>
+              <p className="text-gray-600 mb-1">Dish TV ID: {formData.dishTvId}</p>
+              <p className="text-gray-600 mb-1">Contact: {formData.contact}</p>
+              <p className="text-gray-600 mb-4">About: {formData.about}</p>
+              <button onClick={handleEditToggle} className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                Edit
+              </button>
+            </>
+          )}
+        </div>
       </div>
-      <div className="text-gray-700 space-y-2">
-        <p>
-          <strong>About:</strong> Patient with history of mild asthma, currently
-          managing with prescribed inhaler. Interested in general wellness.
-        </p>
-        <p>
-          <strong>Primary Doctor:</strong> Dr. John Smith
-        </p>
-        <p>
-          <strong>Contact:</strong> +1 (555) 987-6543
-        </p>
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
+
+
+
+
+
+
+
+
+
 
 
 // History component
@@ -193,6 +279,8 @@ const Search = () => {
 };
 
 // Messages component
+
+
 const Messages = () => {
   const [chatMessages, setChatMessages] = useState([
     {
@@ -202,11 +290,24 @@ const Messages = () => {
     { sender: "patient", text: "I'm doing well, thank you!" },
   ]);
   const [input, setInput] = useState("");
+  const [file, setFile] = useState(null); // State to hold the selected file
 
   const sendMessage = () => {
-    if (input.trim() === "") return;
-    setChatMessages((msgs) => [...msgs, { sender: "patient", text: input }]);
+    if (input.trim() === "" && !file) return; // Prevent sending empty messages
+
+    const newMessage = { sender: "patient", text: input };
+
+    // If a file is selected, include it in the message
+    if (file) {
+      newMessage.file = file;
+      // Reset the file after sending
+      setFile(null);
+    }
+
+    setChatMessages((msgs) => [...msgs, newMessage]);
     setInput("");
+
+    // Simulate a response from the doctor
     setTimeout(() => {
       setChatMessages((msgs) => [
         ...msgs,
@@ -215,15 +316,18 @@ const Messages = () => {
     }, 1200);
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile); // Store the selected file in state
+    }
+  };
+
   return (
     <section className="flex justify-center items-center h-screen">
-
       <div className="w-full max-w-5xl bg-white p-10 rounded-xl shadow-md flex flex-col h-[85%]">
-
         <h2 className="text-2xl font-semibold mb-6">Messages</h2>
-        <div
-          className="flex-grow overflow-y-auto p-4 border border-gray-300 rounded-lg bg-gray-100 mb-4"
-        >
+        <div className="flex-grow overflow-y-auto p-4 border border-gray-300 rounded-lg bg-gray-100 mb-4">
           {chatMessages.map((msg, i) => (
             <div
               key={i}
@@ -234,6 +338,17 @@ const Messages = () => {
               }`}
             >
               {msg.text}
+              {msg.file && (
+                <div className="mt-2">
+                  <a
+                    href={URL.createObjectURL(msg.file)} // Create a URL for the file
+                    download={msg.file.name} // Set the file name for download
+                    className="text-blue-400 underline"
+                  >
+                    {msg.file.name}
+                  </a>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -243,7 +358,7 @@ const Messages = () => {
               type="file"
               id="fileUpload"
               className="absolute inset-0 opacity-0 cursor-pointer"
-              onChange={(e) => console.log(e.target.files[0])}
+              onChange={handleFileChange} // Handle file selection
             />
             <label htmlFor="fileUpload" className="w-full h-full flex items-center justify-center">
               <svg
@@ -262,19 +377,18 @@ const Messages = () => {
               </svg>
             </label>
           </div>
-
           <textarea
             rows="3"
             placeholder="Type your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-grow p-3 rounded-lg border border-gray-300 resize-none font-sans text-base h-13 w-full"
+            className="flex-grow p-3 rounded-lg border border-gray-300 resize-none font-sans text-base h-12"
           />
           <button
             onClick={sendMessage}
-            disabled={!input.trim()}
+            disabled={!input.trim() && !file} // Disable if both input and file are empty
             className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-200 ${
-              input.trim()
+              input.trim() || file
                 ? "bg-green-700 hover:bg-green-800 cursor-pointer"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
@@ -286,6 +400,11 @@ const Messages = () => {
     </section>
   );
 };
+
+
+
+
+
 
 //video calling
 const Videocall = () => {
