@@ -21,36 +21,41 @@ const Page = () => {
 
         const onSubmit = async (data) => {
             try {
+                console.log(data);
                 let response;
                 let result;
-                if (data.userOption === "Patient") {
-                    response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/signin`, data);
-                    result = response.data;
+                if (data.userOption === "option1") {
+                    console.log("Patient Login");
+                    data.userOption = "patient";
+                    // response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/signin`, data);
+                    // result = response.data;
                  
-                    if (response && response.status === 201) {
-                    alert("Logged in Successfully");
-                    if (Client) {
+                    // if (response && response.status === 201) {
+                    // alert("Logged in Successfully");
+                    // if (Client) {
                         //    localStorage.setItem('token', result.token);
                         //    localStorage.setItem('user', JSON.stringify(result.user));
                         //    localStorage.setItem('friends', result.friends);
                         router.push('/patientPortal');
-                    }
-                }
+                    // }
+                // }
 
 
-                } else if (data.userOption === "Doctor") {
-                    response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/signin`, data);
-                    result = response.data;
+                } else if (data.userOption === "option2") {
+                    console.log("Doctor Login");
+                     data.userOption = "doctor";
+                    // response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/signin`, data);
+                    // result = response.data;
 
-                    if (response && response.status === 201) {
-                    alert("Logged in Successfully");
-                    if (Client) {
+                    // if (response && response.status === 201) {
+                    // alert("Logged in Successfully");
+                    // if (Client) {
                         //    localStorage.setItem('token', result.token);
                         //    localStorage.setItem('user', JSON.stringify(result.user));
                         //    localStorage.setItem('friends', result.friends);
                         router.push('/DoctorPortal');
-                    }
-                }
+                    // }
+                // }
                 } else {
                     alert('Select appropriate Option');
                     return;
@@ -77,7 +82,7 @@ const Page = () => {
                     sign in
                 </a>
                 
-                <a href="./SignUp" className="w-1/3 pb-2  text-black font-medium text-center capitalize border-b">
+                <a href="../DoctorPortal" className="w-1/3 pb-2  text-black font-medium text-center capitalize border-b">
                     sign up
                 </a>
             </div>
@@ -96,8 +101,8 @@ const Page = () => {
 
             <div className="mt-4">
             <label htmlFor="username"  className="block text-sm font-medium text-gray-800">Username</label>
-            <input type="text"  {...register("username", { required:'Username is required' })} onChange={() => clearErrors('existUser')}
-            className="block w-full px-4 py-2 border  border-black bg-transparent rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+            <input type="text"  {...register("username")} onChange={() => clearErrors('existUser')}
+            className="block w-full  text-gray-800 px-4 py-2 border  border-black bg-transparent rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
         </div>
         {errors.Username && <p className="text-sm text-red-400">{errors.Username.message}</p>}
 
@@ -117,10 +122,10 @@ const Page = () => {
                  </span>
             </div>
 
-            <input type={isPasswordVisible ? 'text' : 'password'}  {...register("Password", { required: 'Password is required',
+            <input type={isPasswordVisible ? 'text' : 'password'}  {...register("Password", { 
             minLength: { value: 6,
               message: 'Password must be at least 6 characters long'}, })} onChange={() => clearErrors('existUser')}
-              className="block w-full  border-black px-4 py-2 bg-transparent border rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+              className="block w-full text-gray-800  border-black px-4 py-2 bg-transparent border rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
         </div>
         {errors.Password && <p className="text-sm text-red-400">{errors.Password.message}</p>}
 

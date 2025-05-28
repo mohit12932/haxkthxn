@@ -18,10 +18,7 @@ dotenv.config();
 
 async function startServer() {
   try {
-    await mongoose.connect(`${process.env.MONGODB_URI}`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(`${process.env.MONGODB_URI}/Info`);
 
     const port = process.env.PORT;
     const server = http.createServer(app);

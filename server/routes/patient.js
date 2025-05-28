@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/signin', async (req, res) => {
   try {
+    console.log(req.body);
     const Patient = await Patient.findOne({ emailadress: req.body.username });
 
     if (Patient && await bcrypt.compare(req.body.Password, Patient.Password)) {

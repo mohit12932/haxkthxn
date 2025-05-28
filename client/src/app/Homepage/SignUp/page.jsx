@@ -20,10 +20,10 @@ const Page = () => {
     };
 
     const onSubmit = async (data) => {
-
          try {
              let response;
                 let result;
+                console.log(data);
         if (data.userOption === "patient") {
              response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/signup`, data); 
              result = response.data;
@@ -49,7 +49,8 @@ const Page = () => {
         else {
                     alert('Select appropriate Option');
                     return;
-                }       
+                }  
+                console.log(result);   
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 setError("existUser ", { message: error.response.data.error });
