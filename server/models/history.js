@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema=mongoose.Schema;
 
 const patientHistorySchema = new mongoose.Schema({
@@ -21,4 +21,5 @@ const patientHistorySchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('PatientHistory', patientHistorySchema);
+const History = mongoose.model('History',patientHistorySchema);
+export default History ;

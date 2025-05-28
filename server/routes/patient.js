@@ -2,11 +2,11 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Patient  from '../models/patient.js';
+import  Doctor  from '../models/doctor.js'; 
 
 const router = express.Router();
 
 router.post('/signin', async (req, res) => {
-  console.log(req.body);
   try {
     const patient = await Patient.findOne({ username: req.body.username });
 
@@ -40,6 +40,18 @@ router.post('/signup', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.get('/searchactive', async (req, res) => {
+  try {
+    const activeDoctors = await Doctor.find({status: 'Active'});
+    res.status(200).json(activeDoctors);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({error: 'Internal Server Error'});
+  }
+});
+
+
 
 
 export default router;

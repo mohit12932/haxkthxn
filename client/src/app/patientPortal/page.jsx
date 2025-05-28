@@ -148,17 +148,7 @@ const Profile = () => {
 };
 
 
-
-
-
-
-
-
-
-
-
 // History component
-
 
 const History = () => {
   const [historyItems, setHistoryItems] = useState([]);
@@ -168,8 +158,8 @@ const History = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get("https://your-api-url.com/history"); // Replace with your API URL
-        setHistoryItems(response.data); // Assuming the server returns an array of history items
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/searchactive`); 
+        setHistoryItems(response.data); 
       } catch (err) {
         setError("An error occurred while fetching history.");
         console.error(err);
@@ -227,7 +217,7 @@ const Search = () => {
     setError("");
 
     try {
-      const response = await axios.get(`https://your-api-url.com/search`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/searchactive`, {
         params: { query }, // Send the query as a parameter
       });
       setResults(response.data); // Assuming the server returns an array of doctors
