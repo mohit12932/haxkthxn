@@ -8,7 +8,7 @@ import doctorconnection from '../server.js';
 const router = express.Router();
 
 router.get('/request', (req, res) => {
-    res.send('g');
+    res.send('g1');
 });
 
 
