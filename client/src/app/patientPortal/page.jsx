@@ -8,6 +8,7 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
     { key: "history", label: "History" },
     { key: "search", label: "Search" },
     { key: "messages", label: "Messages" },
+     { key: "videocall", label: "Video Call" }
   ];
   return (
     <div className="w-72 bg-green-700 text-white flex flex-col p-5">
@@ -286,6 +287,28 @@ const Messages = () => {
   );
 };
 
+//video calling
+const Videocall = () => {
+  const startCall = () => {
+    // Logic to start the video call (e.g., using WebRTC or a third-party service)
+    console.log("Starting video call...");
+  };
+  return (
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="bg-white p-10 rounded-xl shadow-md flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-4">Telemedicine Video Call</h2>
+        <p className="mb-6">You are about to start a video call with your doctor.</p>
+        <button
+          onClick={startCall}
+          className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-200"
+        >
+          Start Video Call
+        </button>
+      </div>
+    </div>
+  );
+};
+
 
 // Main PatientDashboard component
 const PatientDashboard = () => {
@@ -299,6 +322,8 @@ const PatientDashboard = () => {
         {currentSection === "history" && <History />}
         {currentSection === "search" && <Search />}
         {currentSection === "messages" && <Messages />}
+        {currentSection === "videocall" && <Videocall />}
+
       </main>
     </div>
   );
