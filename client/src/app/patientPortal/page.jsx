@@ -11,7 +11,7 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
      { key: "videocall", label: "Video Call" }
   ];
   return (
-    <div className="w-72 bg-green-700 text-white flex flex-col p-5">
+    <div className="w-72 bg-[#A0C878] text-white flex flex-col p-5">
       <h2 className="font-semibold mb-5 tracking-wide text-xl">Patient Dashboard</h2>
       <nav>
         {sections.map(({ key, label }) => (
@@ -22,8 +22,8 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
             className={
               "block px-4 py-3 mb-2 rounded-lg font-semibold cursor-pointer select-none " +
               (currentSection === key
-                ? "bg-green-800"
-                : "hover:bg-green-600 transition-colors duration-200")
+                ? "bg-[#3D8D7A]"
+                : "hover:bg-[#2e544b] transition-colors duration-200")
             }
           >
             {label}

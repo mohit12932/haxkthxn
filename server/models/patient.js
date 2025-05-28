@@ -1,4 +1,4 @@
-const mongoose=require("mongoose");
+import mongoose from 'mongoose';
 
 const Schema=mongoose.Schema;
 
@@ -23,7 +23,7 @@ const patientSchema = new mongoose.Schema({
 
   gender: {
     type: String,
-    enum: ['Male', 'Female', 'Other'],
+    enum: ['male', 'female', 'other'],
     required: true,
   },
 
@@ -44,4 +44,4 @@ const patientSchema = new mongoose.Schema({
 
 const Patient = mongoose.model('Patient', patientSchema);
 
-module.exports = Patient;
+export default Patient;

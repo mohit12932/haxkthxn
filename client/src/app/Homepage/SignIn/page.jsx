@@ -20,42 +20,42 @@ const Page = () => {
         setIsPasswordVisible(!isPasswordVisible); };
 
         const onSubmit = async (data) => {
+              console.log(data);
             try {
-                console.log(data);
                 let response;
                 let result;
                 if (data.userOption === "option1") {
                     console.log("Patient Login");
                     data.userOption = "patient";
-                    // response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/signin`, data);
-                    // result = response.data;
+                    response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/signin`, data);
+                    result = response.data;
                  
-                    // if (response && response.status === 201) {
-                    // alert("Logged in Successfully");
-                    // if (Client) {
+                    if (response && response.status === 201) {
+                    alert("Logged in Successfully");
+                    if (Client) {
                         //    localStorage.setItem('token', result.token);
                         //    localStorage.setItem('user', JSON.stringify(result.user));
                         //    localStorage.setItem('friends', result.friends);
                         router.push('/patientPortal');
-                    // }
-                // }
+                    }
+                }
 
 
                 } else if (data.userOption === "option2") {
                     console.log("Doctor Login");
                      data.userOption = "doctor";
-                    // response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/signin`, data);
-                    // result = response.data;
+                    response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/signin`, data);
+                    result = response.data;
 
-                    // if (response && response.status === 201) {
-                    // alert("Logged in Successfully");
-                    // if (Client) {
+                    if (response && response.status === 201) {
+                    alert("Logged in Successfully");
+                    if (Client) {
                         //    localStorage.setItem('token', result.token);
                         //    localStorage.setItem('user', JSON.stringify(result.user));
                         //    localStorage.setItem('friends', result.friends);
                         router.push('/DoctorPortal');
-                    // }
-                // }
+                    }
+                }
                 } else {
                     alert('Select appropriate Option');
                     return;
@@ -82,7 +82,7 @@ const Page = () => {
                     sign in
                 </a>
                 
-                <a href="../DoctorPortal" className="w-1/3 pb-2  text-black font-medium text-center capitalize border-b">
+                <a href="./SignUp" className="w-1/3 pb-2  text-black font-medium text-center capitalize border-b">
                     sign up
                 </a>
             </div>

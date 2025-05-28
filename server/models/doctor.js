@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema=mongoose.Schema;
 
 const doctorSchema = new mongoose.Schema({
@@ -17,7 +17,7 @@ const doctorSchema = new mongoose.Schema({
 
   gender: {
     type: String,
-    enum: ['Male', 'Female', 'Other'],
+    enum: ['male', 'female', 'other'],
     required: true,
   },
    age: {
@@ -55,4 +55,4 @@ const doctorSchema = new mongoose.Schema({
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
 
-module.exports = Doctor;
+export default Doctor;
