@@ -20,16 +20,36 @@ const Page = () => {
     };
 
     const onSubmit = async (data) => {
-        try {
-            let response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/signup`, data); 
-            let result = response.data;
 
-            if (response.status === 201) {
+         try {
+             let response;
+                let result;
+        if (data.userOption === "patient") {
+             response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/signup`, data); 
+             result = response.data;
+
+             if (response.status === 201) {
                 alert("Signed up Successfully");
                 localStorage.setItem('token', result.token);
                 localStorage.setItem('user', JSON.stringify(result.user));
-                router.push('/Doctor');
+                router.push('./SignIn');
             }
+        }
+        else if (data.userOption === "doctor") {
+             response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/signup`, data); 
+             result = response.data;
+
+             if (response.status === 201) {
+                alert("Signed up Successfully");
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('user', JSON.stringify(result.user));
+                router.push('./SignIn');
+            }
+        }
+        else {
+                    alert('Select appropriate Option');
+                    return;
+                }       
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 setError("existUser ", { message: error.response.data.error });
@@ -42,7 +62,7 @@ const Page = () => {
 
     return (
         <div className="bg-[#FAF6E9] bg-cover bg-no-repeat h-screen flex justify-center items-center">
-            <div className="w-full h-auto bg-[#FFFDF6] max-w-72 sm:max-w-sm py-6 sm:py-12 sm:px-6 mx-auto border border-black rounded-lg shadow-lg">
+            <div className="w-full h-auto bg-[#FFFDF6] max-w-72 sm:max-w-sm py-6 sm:py-12 sm:px-6 mx-auto border rounded-lg shadow-lg">
                 <div className="container flex items-baseline justify-center h-auto px-6 mx-auto">
                     <form className="w-full max-w-md" onSubmit={handleSubmit(onSubmit)}>
                         

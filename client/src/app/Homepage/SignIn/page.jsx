@@ -19,28 +19,51 @@ const Page = () => {
     const togglePasswordVisibility = () => {   
         setIsPasswordVisible(!isPasswordVisible); };
 
-        const onSubmit = async (data)=> {
-
-            try{ let response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/signin`,data); 
-                let result =response.data;
-
-                if(response.status==201){
-                    alert("Logged in Successfully")
-                    if(Client){
-                   localStorage.setItem('token', result.token);
-                   localStorage.setItem('user', JSON.stringify(result.user));
-                   localStorage.setItem('friends', result.friends);}
-                    router.push('/Doctor');
-                    }
-                }catch (error) {
-                    if (error.response && error.response.status === 409) {
-                        setError("existUser", { message: error.response.data.error });
-                    } else {
-                        console.error(error);
-                        alert('An unexpected error occurred');
+        const onSubmit = async (data) => {
+            try {
+                let response;
+                let result;
+                if (data.userOption === "Patient") {
+                    response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/patient/signin`, data);
+                    result = response.data;
+                 
+                    if (response && response.status === 201) {
+                    alert("Logged in Successfully");
+                    if (Client) {
+                        //    localStorage.setItem('token', result.token);
+                        //    localStorage.setItem('user', JSON.stringify(result.user));
+                        //    localStorage.setItem('friends', result.friends);
+                        router.push('/patientPortal');
                     }
                 }
+
+
+                } else if (data.userOption === "Doctor") {
+                    response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctor/signin`, data);
+                    result = response.data;
+
+                    if (response && response.status === 201) {
+                    alert("Logged in Successfully");
+                    if (Client) {
+                        //    localStorage.setItem('token', result.token);
+                        //    localStorage.setItem('user', JSON.stringify(result.user));
+                        //    localStorage.setItem('friends', result.friends);
+                        router.push('/DoctorPortal');
+                    }
+                }
+                } else {
+                    alert('Select appropriate Option');
+                    return;
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 409) {
+                    setError("existUser", { message: error.response.data.error });
+                } else {
+                    console.error(error);
+                    alert('An unexpected error occurred');
+                }
             }
+        }
 
   return (
     <div className="bg-[#FAF6E9] bg-cover bg-no-repeat h-screen  flex justify-center items-center">
@@ -73,7 +96,7 @@ const Page = () => {
 
             <div className="mt-4">
             <label htmlFor="username"  className="block text-sm font-medium text-gray-800">Username</label>
-            <input type="text"  {...register("emailaddress", { required:'Username is required' })} onChange={() => clearErrors('existUser')}
+            <input type="text"  {...register("username", { required:'Username is required' })} onChange={() => clearErrors('existUser')}
             className="block w-full px-4 py-2 border  border-black bg-transparent rounded-lg focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
         </div>
         {errors.Username && <p className="text-sm text-red-400">{errors.Username.message}</p>}
@@ -101,7 +124,6 @@ const Page = () => {
         </div>
         {errors.Password && <p className="text-sm text-red-400">{errors.Password.message}</p>}
 
-           
         <div className="mt-8">
             <button disabled={isSubmitting} className="w-full bg-[#A0C878] px-6 py-2.5 text-sm text-gray-800 font-medium tracking-wide hover:text-gray-800 capitalize transition-colors duration-300 transform  border rounded-lg hover:bg-[#d0ebb5] focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                 Sign In
