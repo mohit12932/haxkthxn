@@ -35,38 +35,40 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
 
 // Profile component
 const Profile = () => (
-  <section className="max-w-3xl bg-white p-8 rounded-xl shadow-md mb-8">
-    <div className="max-w-xl">
-      <div className="flex items-center gap-5">
-        <div
-          className="w-20 h-20 rounded-full shadow-md bg-center bg-cover"
-          style={{
-            backgroundImage: "url('https://randomuser.me/api/portraits/men/32.jpg')",
-            boxShadow:
-              "0 4px 10px rgba(30, 136, 229, 0.3)",
-          }}
-        />
-        <div>
-          <h2 className="text-2xl font-bold mb-1">Dr. John Smith</h2>
-          <p className="text-gray-600 mb-0">Cardiologist</p>
-          <p className="text-gray-600">john.smith@example.com</p>
-        </div>
+  <section className="flex justify-center items-center h-screen">
+    <div className="max-w-2xl bg-white p-10 rounded-xl shadow-md flex flex-col items-center -mt-27">
+      <div
+        className="w-48 h-48 rounded-full shadow-md bg-center bg-cover mb-6"
+        style={{
+          backgroundImage: "url('https://randomuser.me/api/portraits/men/32.jpg')",
+          boxShadow: "0 4px 10px rgba(30, 136, 229, 0.3)",
+        }}
+      />
+      <div className="text-center">
+        <h2 className="text-4xl font-bold mb-2">Dr. John Smith</h2>
+        <p className="text-gray-600 mb-1">Username: dr.johnsmith</p>
+        <p className="text-gray-600 mb-1">Clinic: City Health Medical Center</p>
+        <p className="text-gray-600 mb-1">Gender: Male</p>
+        <p className="text-gray-600 mb-1">Experience: 15 years</p>
+        <p className="text-gray-600 mb-1">Specialist: Cardiologist</p>
+        <p className="text-gray-600 mb-4">Qualification: MBBS, MD (Cardiology)</p>
       </div>
-      <div className="mt-6 text-gray-700 space-y-2">
+      <div className="text-gray-700 space-y-2">
         <p>
-          <strong>About:</strong> Experienced cardiologist with over 15 years of
-          practice. Passionate about patient care and preventative medicine.
-        </p>
-        <p>
-          <strong>Hospital:</strong> City Health Medical Center
+          <strong>About:</strong> Experienced cardiologist with a deep passion for
+          preventative care and personalized treatment plans.
         </p>
         <p>
           <strong>Contact:</strong> +1 (555) 123-4567
+        </p>
+        <p>
+          <strong>Email:</strong> john.smith@example.com
         </p>
       </div>
     </div>
   </section>
 );
+
 
 // Pending Requests component
 const PendingRequests = () => {
@@ -122,7 +124,7 @@ const PendingRequests = () => {
   );
 };
 
-// Messages component
+//Messages
 const Messages = () => {
   const [chatMessages, setChatMessages] = useState([
     {
@@ -146,48 +148,81 @@ const Messages = () => {
   };
 
   return (
-    <section className="max-w-3xl bg-white p-8 rounded-xl shadow-md mb-8 flex flex-col h-[400px]">
-      <h2 className="text-2xl font-semibold mb-6">Messages</h2>
-      <div
-        className="flex-grow overflow-y-auto p-4 border border-gray-300 rounded-lg bg-gray-100 mb-4"
-        id="chat-window"
-      >
-        {chatMessages.map((msg, i) => (
-          <div
-            key={i}
-            className={`max-w-[70%] mb-3 px-4 py-2 rounded-xl leading-relaxed text-sm clear-both ${
-              msg.sender === "doctor"
-                ? "bg-blue-600 text-white float-right rounded-br-none"
-                : "bg-blue-900 text-white float-left rounded-bl-none"
+    <section className="flex justify-center items-center h-screen">
+      <div className="w-full max-w-5xl bg-white p-10 rounded-xl shadow-md flex flex-col h-[85%]">
+        <h2 className="text-2xl font-semibold mb-6">Messages</h2>
+
+        {/* Chat Window */}
+        <div className="flex-grow overflow-y-auto p-4 border border-gray-300 rounded-lg bg-gray-100 mb-4">
+          {chatMessages.map((msg, i) => (
+            <div
+              key={i}
+              className={`max-w-[70%] mb-3 px-4 py-2 rounded-xl leading-relaxed text-sm clear-both ${
+                msg.sender === "doctor"
+                  ? "bg-blue-600 text-white float-right rounded-br-none"
+                  : "bg-blue-900 text-white float-left rounded-bl-none"
+              }`}
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
+
+        {/* Input Area with File Upload Icon */}
+        <div className="flex gap-4">
+          <div className="w-12 h-12 border border-gray-300 rounded-lg flex items-center justify-center cursor-pointer relative">
+            <input
+              type="file"
+              id="fileUpload"
+              className="absolute inset-0 opacity-0 cursor-pointer"
+              onChange={(e) => console.log(e.target.files[0])}
+            />
+            <label
+              htmlFor="fileUpload"
+              className="w-full h-full flex items-center justify-center"
+            >
+              <svg
+                className="w-5 h-5 text-gray-500 hover:text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                />
+              </svg>
+            </label>
+          </div>
+
+          <textarea
+            rows="3"
+            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="flex-grow p-3 rounded-lg border border-gray-300 resize-none font-sans text-base h-13 w-full"
+          />
+          <button
+            onClick={sendMessage}
+            disabled={!input.trim()}
+            className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-200  ${
+              input.trim()
+                ? "bg-blue-700 hover:bg-blue-800 cursor-pointer"
+                : "bg-gray-400 cursor-not-allowed"
             }`}
           >
-            {msg.text}
-          </div>
-        ))}
-      </div>
-      <div className="flex gap-4">
-        <textarea
-          rows="2"
-          placeholder="Type your message..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="flex-grow p-3 rounded-lg border border-gray-300 resize-none font-sans text-base"
-        />
-        <button
-          onClick={sendMessage}
-          disabled={!input.trim()}
-          className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-200 ${
-            input.trim()
-              ? "bg-blue-700 hover:bg-blue-800 cursor-pointer"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
-        >
-          Send
-        </button>
+            Send
+          </button>
+        </div>
       </div>
     </section>
   );
 };
+
+
 
 // Patient Data component
 const PatientData = () => {
