@@ -161,49 +161,72 @@ const Profile = () => {
 
 
 const History = () => {
-  const [historyItems, setHistoryItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const response = await axios.get("https://your-api-url.com/history"); // Replace with your API URL
-        setHistoryItems(response.data); // Assuming the server returns an array of history items
-      } catch (err) {
-        setError("An error occurred while fetching history.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHistory();
-  }, []);
+  const historyItems = [
+    {
+      id: 1,
+      date: "2024-05-15",
+      doctor: "Dr. John Smith",
+      description:
+        "Routine physical examination. Checked vital signs, conducted a general wellness check, and recommended routine blood tests. Patient advised to maintain a healthy diet and regular exercise.",
+    },
+    {
+      id: 2,
+      date: "2024-02-20",
+      doctor: "Dr. Sarah Lee",
+      description:
+        "Follow-up consultation for asthma management. Adjusted inhaler dosage and scheduled next follow-up for July 2024.",
+    },
+    {
+      id: 3,
+      date: "2023-12-05",
+      doctor: "Dr. Alex Cooper",
+      description:
+        "Received flu vaccination at City Clinic. Administered by nurse under doctor's supervision.",
+    },
+    {
+      id: 4,
+      date: "2023-09-10",
+      doctor: "Dr. Maria Gomez",
+      description:
+        "Consultation for seasonal allergies. Antihistamines prescribed for two weeks.",
+    },
+    {
+      id: 5,
+      date: "2023-06-25",
+      doctor: "Dr. Kevin Grant",
+      description:
+        "Routine dental checkup. Mild plaque buildup cleaned, no cavities found.",
+    },
+    {
+      id: 6,
+      date: "2023-03-30",
+      doctor: "Dr. Priya Nair",
+      description:
+        "Eye examination. Prescription updated for reading glasses.",
+    },
+  ];
 
   return (
-    <section className="max-w-3xl bg-white p-8 rounded-xl shadow-md mb-8">
-      <h2 className="text-2xl font-semibold mb-6">History</h2>
-      {loading && <div className="text-gray-500">Loading...</div>}
-      {error && <div className="text-red-500">{error}</div>}
-      <ul>
-        {historyItems.length === 0 && !loading ? (
-          <li className="text-gray-500">No history found.</li>
-        ) : (
-          historyItems.map(({ id, date, action }) => (
-            <li
-              key={id}
-              className="border-b border-gray-200 py-4 last:border-b-0 text-gray-700"
-            >
-              <p className="text-sm text-gray-500">{date}</p>
-              <p>{action}</p>
-            </li>
-          ))
-        )}
-      </ul>
+    <section className="max-w-4xl mx-auto bg-gray-50 p-8 rounded-xl">
+      <h2 className="text-3xl font-bold mb-8 text-center text-blue-700">Patient History</h2>
+      <div className="grid gap-6">
+        {historyItems.map(({ id, date, doctor, description }) => (
+          <div
+            key={id}
+            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200"
+          >
+            <p className="text-sm text-gray-500 mb-1">Date: {date}</p>
+            <p className="text-lg font-semibold text-blue-700 mb-2">Doctor: {doctor}</p>
+            <p className="text-gray-700">{description}</p>
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
+
+
+
 
 
 
