@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import axios from "axios"; 
 
 // Sidebar component with Tailwind CSS classes
 const Sidebar = ({ currentSection, setCurrentSection }) => {
@@ -34,6 +35,9 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
 };
 
 // Profile component
+
+ // Make sure to install axios if you haven't already
+
 const Profile = () => (
   <section className="flex justify-center items-center h-screen">
     <div className="max-w-2xl bg-white p-10 rounded-xl shadow-md flex flex-col items-center -mt-27">
@@ -68,6 +72,13 @@ const Profile = () => (
     </div>
   </section>
 );
+
+
+
+
+
+
+
 
 
 // Pending Requests component
