@@ -30,7 +30,7 @@ const Page = () => {
                    localStorage.setItem('token', result.token);
                    localStorage.setItem('user', JSON.stringify(result.user));
                    localStorage.setItem('friends', result.friends);}
-                    router.push('/chatpage');
+                    router.push('/DoctorPortal');
                     }
                 }catch (error) {
                     if (error.response && error.response.status === 409) {
