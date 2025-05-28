@@ -158,83 +158,85 @@ const Profile = () => {
 
 
 // History component
+
+
 const History = () => {
-  // Sample history data
-  const historyItems = [
-    {
-      id: 1,
-      date: "2024-05-15",
-      description: "Routine physical examination with Dr. John Smith.",
-    },
-    {
-      id: 2,
-      date: "2024-02-20",
-      description: "Follow-up consultation for asthma management.",
-    },
-    {
-      id: 3,
-      date: "2023-12-05",
-      description: "Received flu vaccination at city clinic.",
-    },
-  ];
+  const [historyItems, setHistoryItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get("https://your-api-url.com/history"); // Replace with your API URL
+        setHistoryItems(response.data); // Assuming the server returns an array of history items
+      } catch (err) {
+        setError("An error occurred while fetching history.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHistory();
+  }, []);
 
   return (
     <section className="max-w-3xl bg-white p-8 rounded-xl shadow-md mb-8">
       <h2 className="text-2xl font-semibold mb-6">History</h2>
+      {loading && <div className="text-gray-500">Loading...</div>}
+      {error && <div className="text-red-500">{error}</div>}
       <ul>
-        {historyItems.map(({ id, date, description }) => (
-          <li
-            key={id}
-            className="border-b border-gray-200 py-4 last:border-b-0 text-gray-700"
-          >
-            <p className="text-sm text-gray-500">{date}</p>
-            <p>{description}</p>
-          </li>
-        ))}
+        {historyItems.length === 0 && !loading ? (
+          <li className="text-gray-500">No history found.</li>
+        ) : (
+          historyItems.map(({ id, date, action }) => (
+            <li
+              key={id}
+              className="border-b border-gray-200 py-4 last:border-b-0 text-gray-700"
+            >
+              <p className="text-sm text-gray-500">{date}</p>
+              <p>{action}</p>
+            </li>
+          ))
+        )}
       </ul>
     </section>
   );
 };
 
+
+
+
 // Search component
+
+
 const Search = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // Sample doctors for search demo
-  const doctors = [
-    {
-      id: 1,
-      name: "Dr. John Smith",
-      specialty: "Cardiologist",
-      hospital: "City Health Medical Center",
-    },
-    {
-      id: 2,
-      name: "Dr. Emily Clark",
-      specialty: "Dermatologist",
-      hospital: "Sunshine Clinic",
-    },
-    {
-      id: 3,
-      name: "Dr. Matthew Reed",
-      specialty: "Orthopedist",
-      hospital: "General Hospital",
-    },
-  ];
-
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (query.trim() === "") {
       setResults([]);
       return;
     }
-    const filtered = doctors.filter((doc) =>
-      [doc.name, doc.specialty, doc.hospital]
-        .join(" ")
-        .toLowerCase()
-        .includes(query.toLowerCase())
-    );
-    setResults(filtered);
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.get(`https://your-api-url.com/search`, {
+        params: { query }, // Send the query as a parameter
+      });
+      setResults(response.data); // Assuming the server returns an array of doctors
+    } catch (err) {
+      setError("An error occurred while fetching data.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -258,25 +260,29 @@ const Search = () => {
           Search
         </button>
       </div>
-      <ul>
-        {results.length === 0 && query.trim() !== "" ? (
-          <li className="text-gray-500">No results found.</li>
+      {loading && <div className="text-gray-500">Loading...</div>}
+      {error && <div className="text-red-500">{error}</div>}
+      <div>
+        {results.length === 0 && query.trim() !== "" && !loading ? (
+          <div className="text-gray-500">No results found.</div>
         ) : (
           results.map(({ id, name, specialty, hospital }) => (
-            <li
+            <div
               key={id}
               className="border-b border-gray-200 py-4 last:border-b-0"
             >
               <p className="font-semibold text-lg">{name}</p>
               <p className="text-gray-700">{specialty}</p>
               <p className="text-gray-500">{hospital}</p>
-            </li>
+            </div>
           ))
         )}
-      </ul>
+      </div>
     </section>
   );
 };
+
+
 
 // Messages component
 

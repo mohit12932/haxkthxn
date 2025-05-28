@@ -248,6 +248,10 @@ const PendingRequests = () => {
 };
 
 //Messages
+
+
+
+
 const Messages = () => {
   const [chatMessages, setChatMessages] = useState([
     {
@@ -257,53 +261,77 @@ const Messages = () => {
     { sender: "doctor", text: "Hi Alice, sure, please tell me more." },
   ]);
   const [input, setInput] = useState("");
+  const [file, setFile] = useState(null); // State to hold the selected file
 
   const sendMessage = () => {
-    if (input.trim() === "") return;
-    setChatMessages((msgs) => [...msgs, { sender: "doctor", text: input }]);
+    if (input.trim() === "" && !file) return; // Prevent sending empty messages
+
+    const newMessage = { sender: "patient", text: input };
+
+    // If a file is selected, include it in the message
+    if (file) {
+      newMessage.file = file;
+      // Reset the file after sending
+      setFile(null);
+    }
+
+    setChatMessages((msgs) => [...msgs, newMessage]);
     setInput("");
+
+    // Simulate a response from the doctor
     setTimeout(() => {
       setChatMessages((msgs) => [
         ...msgs,
-        { sender: "patient", text: "Thank you, doctor!" },
+        { sender: "doctor", text: "Glad to hear that! Let me know if you have questions." },
       ]);
     }, 1200);
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile); // Store the selected file in state
+    }
   };
 
   return (
     <section className="flex justify-center items-center h-screen">
       <div className="w-full max-w-5xl bg-white p-10 rounded-xl shadow-md flex flex-col h-[85%]">
         <h2 className="text-2xl font-semibold mb-6">Messages</h2>
-
-        {/* Chat Window */}
         <div className="flex-grow overflow-y-auto p-4 border border-gray-300 rounded-lg bg-gray-100 mb-4">
           {chatMessages.map((msg, i) => (
             <div
               key={i}
               className={`max-w-[70%] mb-3 px-4 py-2 rounded-xl leading-relaxed text-sm clear-both ${
-                msg.sender === "doctor"
-                  ? "bg-blue-600 text-white float-right rounded-br-none"
-                  : "bg-blue-900 text-white float-left rounded-bl-none"
+                msg.sender === "patient"
+                  ? "bg-green-600 text-white float-right rounded-br-none"
+                  : "bg-green-900 text-white float-left rounded-bl-none"
               }`}
             >
               {msg.text}
+              {msg.file && (
+                <div className="mt-2">
+                  <a
+                    href={URL.createObjectURL(msg.file)} // Create a URL for the file
+                    download={msg.file.name} // Set the file name for download
+                    className="text-blue-400 underline"
+                  >
+                    {msg.file.name}
+                  </a>
+                </div>
+              )}
             </div>
           ))}
         </div>
-
-        {/* Input Area with File Upload Icon */}
         <div className="flex gap-4">
           <div className="w-12 h-12 border border-gray-300 rounded-lg flex items-center justify-center cursor-pointer relative">
             <input
               type="file"
               id="fileUpload"
               className="absolute inset-0 opacity-0 cursor-pointer"
-              onChange={(e) => console.log(e.target.files[0])}
+              onChange={handleFileChange} // Handle file selection
             />
-            <label
-              htmlFor="fileUpload"
-              className="w-full h-full flex items-center justify-center"
-            >
+            <label htmlFor="fileUpload" className="w-full h-full flex items-center justify-center">
               <svg
                 className="w-5 h-5 text-gray-500 hover:text-gray-700"
                 fill="none"
@@ -320,7 +348,6 @@ const Messages = () => {
               </svg>
             </label>
           </div>
-
           <textarea
             rows="3"
             placeholder="Type your message..."
@@ -330,10 +357,10 @@ const Messages = () => {
           />
           <button
             onClick={sendMessage}
-            disabled={!input.trim()}
-            className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-200  ${
-              input.trim()
-                ? "bg-blue-700 hover:bg-blue-800 cursor-pointer"
+            disabled={!input.trim() && !file} // Disable if both input and file are empty
+            className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-200 ${
+              input.trim() || file
+                ? "bg-green-700 hover:bg-green-800 cursor-pointer"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
           >
@@ -344,6 +371,12 @@ const Messages = () => {
     </section>
   );
 };
+
+
+
+
+
+
 
 
 
