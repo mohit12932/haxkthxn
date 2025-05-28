@@ -10,7 +10,7 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
     { key: "patients", label: "Patient Data" },
   ];
   return (
-    <div className="w-72 bg-blue-700 text-white flex flex-col p-5">
+    <div className="w-72 bg-[#A0C878] text-white flex flex-col p-5">
       <h2 className="font-semibold mb-5 tracking-wide text-xl">Doctor&#39;s Dashboard</h2>
       <nav>
         {sections.map(({ key, label }) => (
@@ -21,8 +21,8 @@ const Sidebar = ({ currentSection, setCurrentSection }) => {
             className={
               "block px-4 py-3 mb-2 rounded-lg font-semibold cursor-pointer select-none " +
               (currentSection === key
-                ? "bg-blue-800"
-                : "hover:bg-blue-600 transition-colors duration-200")
+                ? "bg-[#3D8D7A]"
+                : "hover:bg-[#2e544b] transition-colors duration-200")
             }
           >
             {label}
@@ -271,7 +271,7 @@ const Page = () => {
   const [currentSection, setCurrentSection] = useState("profile");
 
   return (
-    <div className="flex h-screen font-sans bg-gray-50 text-gray-900">
+    <div className="flex h-screen font-sans bg-[#FAF6E9] text-gray-900">
       <Sidebar currentSection={currentSection} setCurrentSection={setCurrentSection} />
       <main className="flex-grow p-10 overflow-auto">
         {currentSection === "profile" && <Profile />}

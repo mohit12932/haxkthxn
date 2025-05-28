@@ -50,7 +50,7 @@ const Page = () => {
             
             <div className="flex items-center justify-center mt-6">
                 <a href="#" className="w-1/3 pb-2 '
-                ' text-black font-medium text-center capitalize border-b-3 border-[#A0C878]">
+                ' text-black font-medium text-center capitalize border-b-4 border-[#A0C878]">
                     sign in
                 </a>
                 
@@ -103,7 +103,7 @@ const Page = () => {
 
            
         <div className="mt-8">
-            <button disabled={isSubmitting} className="w-full bg-[#A0C878] px-6 py-2.5 text-sm text-gray-800 font-medium tracking-wide hover:text-gray-800 capitalize transition-colors duration-300 transform  border rounded-lg hover:bg-white focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+            <button disabled={isSubmitting} className="w-full bg-[#A0C878] px-6 py-2.5 text-sm text-gray-800 font-medium tracking-wide hover:text-gray-800 capitalize transition-colors duration-300 transform  border rounded-lg hover:bg-[#d0ebb5] focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                 Sign In
             </button>
         </div>
